@@ -14,7 +14,7 @@ public sealed class PackageInstallMetadataTests
         await Assert.That(readme).Contains("vscode.dev/redirect/mcp/install?name=crisscross-mcp-server");
         await Assert.That(readme).Contains("insiders.vscode.dev/redirect/mcp/install?name=crisscross-mcp-server");
         await Assert.That(readme).Contains("vs-open.link/mcp-install");
-        await Assert.That(readme).Contains("CP.CrissCross.Mcp.Server@0.*");
+        await Assert.That(readme).Contains("CrissCross.Mcp.Server@0.*");
     }
 
     [Test]
@@ -25,7 +25,7 @@ public sealed class PackageInstallMetadataTests
         var package = manifest.RootElement.GetProperty("packages")[0];
 
         await Assert.That(manifest.RootElement.GetProperty("name").GetString()).IsEqualTo("io.github.chrispulman/crisscross-mcp-server");
-        await Assert.That(package.GetProperty("identifier").GetString()).IsEqualTo("CP.CrissCross.Mcp.Server");
+        await Assert.That(package.GetProperty("identifier").GetString()).IsEqualTo("CrissCross.Mcp.Server");
         await Assert.That(package.GetProperty("runtimeHint").GetString()).IsEqualTo("dnx");
         await Assert.That(package.GetProperty("transport").GetProperty("type").GetString()).IsEqualTo("stdio");
     }

@@ -8,7 +8,7 @@
     {
       "registryType": "nuget",
       "registryBaseUrl": "https://api.nuget.org/v3/index.json",
-      "identifier": "CP.CrissCross.Mcp.Server",
+      "identifier": "CrissCross.Mcp.Server",
       "version": "0.1.0",
       "runtimeHint": "dnx",
       "transport": {
