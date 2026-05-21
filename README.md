@@ -12,12 +12,12 @@ The server is implemented in C# on `net10.0` using `ModelContextProtocol` `1.3.0
 
 Click to install in your preferred environment:
 
-[![VS Code - Install CrissCross MCP](https://img.shields.io/badge/VS_Code-Install_CrissCross_MCP-0098FF?style=flat-square&logo=visualstudiocode&logoColor=white)](https://vscode.dev/redirect/mcp/install?name=crisscross-mcp-server&config=%7B%22type%22%3A%22stdio%22%2C%22command%22%3A%22dnx%22%2C%22args%22%3A%5B%22CP.CrissCross.Mcp.Server%400.*%22%2C%22--yes%22%5D%7D)
-[![VS Code Insiders - Install CrissCross MCP](https://img.shields.io/badge/VS_Code_Insiders-Install_CrissCross_MCP-24bfa5?style=flat-square&logo=visualstudiocode&logoColor=white)](https://insiders.vscode.dev/redirect/mcp/install?name=crisscross-mcp-server&config=%7B%22type%22%3A%22stdio%22%2C%22command%22%3A%22dnx%22%2C%22args%22%3A%5B%22CP.CrissCross.Mcp.Server%400.*%22%2C%22--yes%22%5D%7D&quality=insiders)
-[![Visual Studio - Install CrissCross MCP](https://img.shields.io/badge/Visual_Studio-Install_CrissCross_MCP-5C2D91?style=flat-square&logo=visualstudio&logoColor=white)](https://vs-open.link/mcp-install?%7B%22name%22%3A%22CP.CrissCross.Mcp.Server%22%2C%22type%22%3A%22stdio%22%2C%22command%22%3A%22dnx%22%2C%22args%22%3A%5B%22CP.CrissCross.Mcp.Server%400.*%22%2C%22--yes%22%5D%7D)
+[![VS Code - Install CrissCross MCP](https://img.shields.io/badge/VS_Code-Install_CrissCross_MCP-0098FF?style=flat-square&logo=visualstudiocode&logoColor=white)](https://vscode.dev/redirect/mcp/install?name=crisscross-mcp-server&config=%7B%22type%22%3A%22stdio%22%2C%22command%22%3A%22dnx%22%2C%22args%22%3A%5B%22CrissCross.Mcp.Server%400.*%22%2C%22--yes%22%5D%7D)
+[![VS Code Insiders - Install CrissCross MCP](https://img.shields.io/badge/VS_Code_Insiders-Install_CrissCross_MCP-24bfa5?style=flat-square&logo=visualstudiocode&logoColor=white)](https://insiders.vscode.dev/redirect/mcp/install?name=crisscross-mcp-server&config=%7B%22type%22%3A%22stdio%22%2C%22command%22%3A%22dnx%22%2C%22args%22%3A%5B%22CrissCross.Mcp.Server%400.*%22%2C%22--yes%22%5D%7D&quality=insiders)
+[![Visual Studio - Install CrissCross MCP](https://img.shields.io/badge/Visual_Studio-Install_CrissCross_MCP-5C2D91?style=flat-square&logo=visualstudio&logoColor=white)](https://vs-open.link/mcp-install?%7B%22name%22%3A%22CrissCross.Mcp.Server%22%2C%22type%22%3A%22stdio%22%2C%22command%22%3A%22dnx%22%2C%22args%22%3A%5B%22CrissCross.Mcp.Server%400.*%22%2C%22--yes%22%5D%7D)
 
 Note:
-- These install links are prepared for the NuGet package identity `CP.CrissCross.Mcp.Server`.
+- These install links are prepared for the NuGet package identity `CrissCross.Mcp.Server`.
 - If the latest package has not been published yet, use the manual source-build configuration below.
 
 Manual MCP configuration using NuGet:
@@ -29,7 +29,7 @@ Manual MCP configuration using NuGet:
       "type": "stdio",
       "command": "dnx",
       "args": [
-        "CP.CrissCross.Mcp.Server@0.*",
+        "CrissCross.Mcp.Server@0.*",
         "--yes"
       ]
     }
@@ -181,7 +181,7 @@ Server metadata file:
 
 Current working identifiers:
 - MCP server name: `io.github.chrispulman/crisscross-mcp-server`
-- package id: `CP.CrissCross.Mcp.Server`
+- package id: `CrissCross.Mcp.Server`
 - tool command: `crisscross-mcp-server`
 - version: `0.1.0`
 

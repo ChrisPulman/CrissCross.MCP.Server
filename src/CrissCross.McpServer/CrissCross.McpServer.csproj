@@ -1,9 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <AssemblyName>CP.CrissCross.McpServer</AssemblyName>
+    <AssemblyName>CrissCross.McpServer</AssemblyName>
     <RootNamespace>CrissCross.McpServer</RootNamespace>
-    <PackageId>CP.CrissCross.Mcp.Server</PackageId>
+    <PackageId>CrissCross.Mcp.Server</PackageId>
     <Title>CrissCross MCP Server</Title>
     <Description>Stdio MCP server for CrissCross developer knowledge and generators.</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
