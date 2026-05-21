@@ -2,8 +2,18 @@ using CrissCross.McpServer.Core.Templates.Models;
 
 namespace CrissCross.McpServer.Core.Review;
 
+/// <summary>
+/// Performs deterministic text-based review checks for common CrissCross anti-patterns.
+/// </summary>
 public sealed class CrissCrossSnippetReviewer
 {
+    /// <summary>
+    /// Reviews a C# snippet for known CrissCross anti-patterns.
+    /// </summary>
+    /// <param name="code">The C# code snippet to review.</param>
+    /// <param name="platform">Optional platform context.</param>
+    /// <param name="projectKind">Optional project-kind context.</param>
+    /// <returns>The diagnostics found in the snippet.</returns>
     public IReadOnlyList<ReviewDiagnostic> Review(string code, FrameworkTarget? platform = null, string? projectKind = null)
     {
         ArgumentNullException.ThrowIfNull(code);

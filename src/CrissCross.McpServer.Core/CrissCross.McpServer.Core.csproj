@@ -1,5 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Core CrissCross knowledge, review, resource, and template services for the MCP server.</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>CrissCross;MCP;Model Context Protocol;C#;dotnet;templates;code review</PackageTags>
   </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="" Link="README.md" />
+    <None Include="..\..\skills\crisscross\SKILL.md" Pack="true" PackagePath="skills\crisscross\" Link="skills\crisscross\SKILL.md" />
+  </ItemGroup>
 </Project>

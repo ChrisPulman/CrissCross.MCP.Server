@@ -1,12 +1,26 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
+    <AssemblyName>CP.CrissCross.McpServer</AssemblyName>
+    <RootNamespace>CrissCross.McpServer</RootNamespace>
+    <PackageId>CP.CrissCross.Mcp.Server</PackageId>
+    <Title>CrissCross MCP Server</Title>
     <Description>Stdio MCP server for CrissCross developer knowledge and generators.</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>CrissCross;MCP;Model Context Protocol;C#;dotnet;WPF;WinForms;MAUI;Avalonia;ReactiveUI</PackageTags>
+    <PackAsTool>true</PackAsTool>
+    <PackageType>McpServer</PackageType>
+    <ToolCommandName>crisscross-mcp-server</ToolCommandName>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\CrissCross.McpServer.Core\CrissCross.McpServer.Core.csproj" />
     <PackageReference Include="Microsoft.Extensions.Hosting" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" />
     <PackageReference Include="ModelContextProtocol" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="" Link="README.md" />
+    <None Include="..\..\.mcp\server.json" Pack="true" PackagePath=".mcp\server.json" Link=".mcp\server.json" />
+    <None Include="..\..\skills\crisscross\SKILL.md" Pack="true" PackagePath="skills\crisscross\" Link="skills\crisscross\SKILL.md" />
   </ItemGroup>
 </Project>
