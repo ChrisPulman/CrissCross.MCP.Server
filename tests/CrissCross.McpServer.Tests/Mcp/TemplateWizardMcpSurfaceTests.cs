@@ -1,3 +1,4 @@
+using CrissCross.McpServer.Core.Catalog;
 using CrissCross.McpServer.Core.Resources;
 using CrissCross.McpServer.Mcp;
 
@@ -8,7 +9,9 @@ public sealed class TemplateWizardMcpSurfaceTests
     [Test]
     public async Task ProjectStarterToolReturnsDiagnosticsNextStepsAndFilePreviews()
     {
+        var catalog = CrissCrossKnowledgeCatalog.CreateDefault();
         var json = CrissCrossTools.crisscross_generate_project_starter(
+            catalog,
             "avalonia",
             "navigation-and-ui",
             "SampleApp",

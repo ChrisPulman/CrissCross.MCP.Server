@@ -69,4 +69,47 @@ public sealed class CrissCrossSnippetReviewerTests
 
         await Assert.That(diagnostics.Any(diagnostic => diagnostic.RuleId == "CC008")).IsTrue();
     }
+
+    [Test]
+    public async Task ReviewerReturnsNoDiagnosticsForCleanCrissCrossSnippet()
+    {
+        const string code = """
+            public sealed class HomeViewModel : RxObject
+            {
+                private string _title = "Home";
+                public string Title { get => _title; set => this.RaiseAndSetIfChanged(ref _title, value); }
+            }
+            """;
+
+        var diagnostics = CrissCrossKnowledgeCatalog.CreateDefault().ReviewCodeSnippet(code);
+
+        await Assert.That(diagnostics).IsEmpty();
+    }
+
+    [Test]
+    public async Task ReviewerCanReturnMultipleDiagnostics()
+    {
+        const string code = """
+            public Window MainWindow { get; }
+            host.HostName = "";
+            State.Filter.Text = value;
+            RxApp.MainThreadScheduler.Schedule(() => { });
+            """;
+
+        var diagnostics = CrissCrossKnowledgeCatalog.CreateDefault().ReviewCodeSnippet(code, projectKind: "core");
+        var ruleIds = diagnostics.Select(diagnostic => diagnostic.RuleId).ToArray();
+
+        await Assert.That(ruleIds).Contains("CC001");
+        await Assert.That(ruleIds).Contains("CC005");
+        await Assert.That(ruleIds).Contains("CC006");
+        await Assert.That(ruleIds).Contains("CC007");
+    }
+
+    [Test]
+    public async Task ReviewerRejectsNullCode()
+    {
+        var reviewer = new CrissCrossSnippetReviewer();
+
+        await Assert.That(() => reviewer.Review(null!)).Throws<ArgumentNullException>();
+    }
 }

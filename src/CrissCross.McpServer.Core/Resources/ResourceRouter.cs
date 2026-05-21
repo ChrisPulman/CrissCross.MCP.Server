@@ -5,6 +5,9 @@ using CrissCross.McpServer.Core.Templates.Models;
 
 namespace CrissCross.McpServer.Core.Resources;
 
+/// <summary>
+/// Routes <c>crisscross://</c> resource URIs to deterministic catalog-backed content.
+/// </summary>
 public sealed class ResourceRouter
 {
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web)
@@ -15,10 +18,24 @@ public sealed class ResourceRouter
 
     private readonly CrissCrossKnowledgeCatalog _catalog;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ResourceRouter"/> class.
+    /// </summary>
+    /// <param name="catalog">The CrissCross knowledge catalog used to serve resources.</param>
     public ResourceRouter(CrissCrossKnowledgeCatalog catalog) => _catalog = catalog;
 
+    /// <summary>
+    /// Creates a router using the default CrissCross knowledge catalog.
+    /// </summary>
+    /// <returns>A default resource router.</returns>
     public static ResourceRouter CreateDefault() => new(CrissCrossKnowledgeCatalog.CreateDefault());
 
+    /// <summary>
+    /// Reads a resource by URI.
+    /// </summary>
+    /// <param name="uri">The full <c>crisscross://</c> resource URI.</param>
+    /// <returns>The routed resource content.</returns>
+    /// <exception cref="InvalidOperationException">Thrown when the URI is not a known CrissCross resource.</exception>
     public string ReadResource(string uri)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(uri);

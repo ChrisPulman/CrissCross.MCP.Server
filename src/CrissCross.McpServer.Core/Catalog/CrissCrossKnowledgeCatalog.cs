@@ -5,6 +5,16 @@ using CrissCross.McpServer.Core.Templates.Models;
 
 namespace CrissCross.McpServer.Core.Catalog;
 
+/// <summary>
+/// Describes a CrissCross package and the platform metadata needed by agents.
+/// </summary>
+/// <param name="Id">The NuGet package identifier.</param>
+/// <param name="DisplayName">The human-readable package name.</param>
+/// <param name="Platform">The platform supported by the package, or <see langword="null"/> for shared packages.</param>
+/// <param name="TargetFrameworks">Target frameworks supported by the package.</param>
+/// <param name="Dependencies">Package dependencies required by the package.</param>
+/// <param name="SourcePaths">Source repository paths used as provenance.</param>
+/// <param name="Notes">Additional setup or usage notes.</param>
 public sealed record PackageInfo(
     string Id,
     string DisplayName,
@@ -14,6 +24,17 @@ public sealed record PackageInfo(
     IReadOnlyList<string> SourcePaths,
     IReadOnlyList<string> Notes);
 
+/// <summary>
+/// Describes startup requirements and snippets for a CrissCross platform.
+/// </summary>
+/// <param name="Target">The platform target.</param>
+/// <param name="Mode">The wizard mode the recipe applies to, or <see langword="null"/> for the default recipe.</param>
+/// <param name="Title">The recipe title.</param>
+/// <param name="RequiredPackages">Packages required by the startup pattern.</param>
+/// <param name="RequiredFiles">Files or resources required by the startup pattern.</param>
+/// <param name="CodeSnippet">Representative startup code.</param>
+/// <param name="Gotchas">Common setup mistakes for the recipe.</param>
+/// <param name="SourceReferences">Source repository references that back the recipe.</param>
 public sealed record StartupRecipe(
     FrameworkTarget Target,
     WizardMode? Mode,
@@ -24,6 +45,16 @@ public sealed record StartupRecipe(
     IReadOnlyList<string> Gotchas,
     IReadOnlyList<string> SourceReferences);
 
+/// <summary>
+/// Describes a CrissCross navigation pattern and its setup requirements.
+/// </summary>
+/// <param name="Kind">The stable recipe kind.</param>
+/// <param name="Target">The platform target, or <see langword="null"/> when the recipe is shared.</param>
+/// <param name="Summary">A concise description of the navigation pattern.</param>
+/// <param name="CodeSnippet">Representative navigation code.</param>
+/// <param name="RequiredSetup">Required setup steps.</param>
+/// <param name="CommonFailures">Common failure modes.</param>
+/// <param name="SourceReferences">Source repository references that back the recipe.</param>
 public sealed record NavigationRecipe(
     string Kind,
     FrameworkTarget? Target,
@@ -33,6 +64,16 @@ public sealed record NavigationRecipe(
     IReadOnlyList<string> CommonFailures,
     IReadOnlyList<string> SourceReferences);
 
+/// <summary>
+/// Describes a source-backed CrissCross UI control.
+/// </summary>
+/// <param name="Name">The control name.</param>
+/// <param name="Target">The platform target.</param>
+/// <param name="PackageId">The package that provides the control.</param>
+/// <param name="StateModel">The state model associated with the control, when one exists.</param>
+/// <param name="Features">Searchable features exposed by the control.</param>
+/// <param name="SourcePaths">Source repository paths used as provenance.</param>
+/// <param name="UsageSnippet">Representative usage guidance.</param>
 public sealed record ControlInfo(
     string Name,
     FrameworkTarget Target,
@@ -42,6 +83,9 @@ public sealed record ControlInfo(
     IReadOnlyList<string> SourcePaths,
     string UsageSnippet);
 
+/// <summary>
+/// Provides deterministic, source-backed CrissCross package, startup, navigation, control, review, and template knowledge.
+/// </summary>
 public sealed class CrissCrossKnowledgeCatalog
 {
     private readonly IReadOnlyList<PackageInfo> _packages;
@@ -64,6 +108,10 @@ public sealed class CrissCrossKnowledgeCatalog
         _reviewer = reviewer;
     }
 
+    /// <summary>
+    /// Creates the default in-memory catalog used by the MCP server.
+    /// </summary>
+    /// <returns>A catalog populated with built-in CrissCross knowledge.</returns>
     public static CrissCrossKnowledgeCatalog CreateDefault() => new(
         CreatePackages(),
         CreateStartupRecipes(),
@@ -71,6 +119,12 @@ public sealed class CrissCrossKnowledgeCatalog
         CreateControls(),
         new CrissCrossSnippetReviewer());
 
+    /// <summary>
+    /// Gets CrissCross package metadata, optionally filtered by platform and target framework.
+    /// </summary>
+    /// <param name="platform">Optional platform filter.</param>
+    /// <param name="targetFramework">Optional target framework filter.</param>
+    /// <returns>The matching package metadata.</returns>
     public IReadOnlyList<PackageInfo> GetPackageMatrix(string? platform = null, string? targetFramework = null)
     {
         var target = TryParseTarget(platform);
@@ -80,12 +134,32 @@ public sealed class CrissCrossKnowledgeCatalog
             .ToArray();
     }
 
+    /// <summary>
+    /// Gets a startup recipe for the specified platform target and optional wizard mode.
+    /// </summary>
+    /// <param name="target">The platform target.</param>
+    /// <param name="mode">Optional wizard mode.</param>
+    /// <returns>The matching startup recipe.</returns>
     public StartupRecipe GetStartupRecipe(FrameworkTarget target, WizardMode? mode = null) =>
         _startupRecipes.First(recipe => recipe.Target == target && (recipe.Mode == mode || recipe.Mode is null));
 
+    /// <summary>
+    /// Gets a startup recipe by platform name and optional UI mode.
+    /// </summary>
+    /// <param name="platform">The platform identifier.</param>
+    /// <param name="uiMode">Optional UI mode or wizard mode.</param>
+    /// <returns>The matching startup recipe.</returns>
     public StartupRecipe GetStartupRecipe(string platform, string? uiMode = null) =>
         GetStartupRecipe(ParseTarget(platform), ParseMode(uiMode));
 
+    /// <summary>
+    /// Gets a navigation recipe by kind and optional host or contract context.
+    /// </summary>
+    /// <param name="kind">The navigation recipe kind.</param>
+    /// <param name="platform">Optional platform target.</param>
+    /// <param name="hostName">Optional host name to include in the returned summary.</param>
+    /// <param name="contract">Optional navigation contract to include in the returned summary.</param>
+    /// <returns>The matching navigation recipe.</returns>
     public NavigationRecipe GetNavigationRecipe(string kind, FrameworkTarget? platform = null, string? hostName = null, string? contract = null)
     {
         var recipe = _navigationRecipes.First(candidate => string.Equals(candidate.Kind, kind, StringComparison.OrdinalIgnoreCase));
@@ -100,25 +174,65 @@ public sealed class CrissCrossKnowledgeCatalog
         return recipe;
     }
 
+    /// <summary>
+    /// Finds a control by platform and name or feature.
+    /// </summary>
+    /// <param name="target">The platform target.</param>
+    /// <param name="nameOrFeature">A control name or feature search term.</param>
+    /// <returns>The matching control, or <see langword="null"/> when no control matches.</returns>
     public ControlInfo? FindControl(FrameworkTarget target, string nameOrFeature) =>
         _controls.FirstOrDefault(control => control.Target == target &&
             (control.Name.Contains(nameOrFeature, StringComparison.OrdinalIgnoreCase) ||
              control.Features.Any(feature => feature.Contains(nameOrFeature, StringComparison.OrdinalIgnoreCase))));
 
+    /// <summary>
+    /// Finds a control by platform name and control name or feature.
+    /// </summary>
+    /// <param name="platform">The platform identifier.</param>
+    /// <param name="nameOrFeature">A control name or feature search term.</param>
+    /// <returns>The matching control, or <see langword="null"/> when no control matches.</returns>
     public ControlInfo? FindControl(string platform, string nameOrFeature) => FindControl(ParseTarget(platform), nameOrFeature);
 
+    /// <summary>
+    /// Gets guidance for CrissCross replacement state-model semantics.
+    /// </summary>
+    /// <returns>A concise guidance string.</returns>
     public string GetStateModelGuidance() =>
         "State models such as SearchQueryState, ValidationSummaryState, ThemePreferenceState, and CommandButtonStatus are snapshots: replace immutable/snapshot state values; do not deep-mutate nested values. Use RaiseAndSetIfChanged with a new state instance.";
 
+    /// <summary>
+    /// Reviews code for deterministic CrissCross anti-pattern diagnostics.
+    /// </summary>
+    /// <param name="code">The C# code snippet to review.</param>
+    /// <param name="platform">Optional platform context.</param>
+    /// <param name="projectKind">Optional project-kind context.</param>
+    /// <returns>The review diagnostics.</returns>
     public IReadOnlyList<ReviewDiagnostic> ReviewCodeSnippet(string code, FrameworkTarget? platform = null, string? projectKind = null) =>
         _reviewer.Review(code, platform, projectKind);
 
+    /// <summary>
+    /// Gets all supported template target and mode combinations.
+    /// </summary>
+    /// <returns>The supported template combinations.</returns>
     public IReadOnlyList<(FrameworkTarget Target, WizardMode Mode)> GetTemplateCombinations() =>
         Enum.GetValues<FrameworkTarget>().SelectMany(_ => Enum.GetValues<WizardMode>(), (target, mode) => (target, mode)).ToArray();
 
+    /// <summary>
+    /// Generates a preview-only CrissCross project starter.
+    /// </summary>
+    /// <param name="request">The template generation request.</param>
+    /// <returns>The generated-file previews, diagnostics, and next steps.</returns>
     public TemplateGenerationResult GenerateProjectStarter(TemplateGenerationRequest request) =>
         CrissCross.McpServer.Core.Templates.TemplateWizardEngine.Generate(request);
 
+    /// <summary>
+    /// Generates a CrissCross view-model code snippet.
+    /// </summary>
+    /// <param name="feature">The feature name for the snippet.</param>
+    /// <param name="className">The generated class name.</param>
+    /// <param name="namespace">The generated namespace.</param>
+    /// <param name="navigationMode">Optional navigation-mode context.</param>
+    /// <returns>A C# view-model snippet.</returns>
     public string GenerateViewModel(string feature, string className, string @namespace, string? navigationMode = null) => $$"""
         using System.Reactive;
         using System.Reactive.Linq;
@@ -148,10 +262,15 @@ public sealed class CrissCrossKnowledgeCatalog
 
             public ReactiveCommand<Unit, Unit> Save { get; }
 
-            private static Task SaveAsync() => Task.CompletedTask;
-        }
-        """;
+        private static Task SaveAsync() => Task.CompletedTask;
+    }
+    """;
 
+    /// <summary>
+    /// Generates a CrissCross navigation registry code snippet.
+    /// </summary>
+    /// <param name="mappingSpec">The caller-provided mapping specification.</param>
+    /// <returns>A C# navigation registry snippet.</returns>
     public string GenerateNavigationRegistry(string mappingSpec) => $$"""
         var registry = new NavigationRegistry()
             .Register<HomeViewModel, HomeView>(contract: "Home");
@@ -161,6 +280,12 @@ public sealed class CrissCrossKnowledgeCatalog
         // Validate duplicate contracts and unknown contracts in tests before navigation.
         """;
 
+    /// <summary>
+    /// Explains a common CrissCross error or symptom.
+    /// </summary>
+    /// <param name="message">The error message or symptom text.</param>
+    /// <param name="platform">Optional platform context.</param>
+    /// <returns>A concise explanation and likely fix direction.</returns>
     public string ExplainError(string message, FrameworkTarget? platform = null)
     {
         if (message.Contains("host", StringComparison.OrdinalIgnoreCase))
