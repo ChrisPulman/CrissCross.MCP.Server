@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/CrissCross.McpServer.Core/CrissCross.McpServer.Core.csproj" />
+    <Project Path="src/CrissCross.McpServer/CrissCross.McpServer.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/CrissCross.McpServer.Tests/CrissCross.McpServer.Tests.csproj" />
+  </Folder>
+</Solution>

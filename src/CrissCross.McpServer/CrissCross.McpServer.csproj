@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <Description>Stdio MCP server for CrissCross developer knowledge and generators.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CrissCross.McpServer.Core\CrissCross.McpServer.Core.csproj" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" />
+    <PackageReference Include="ModelContextProtocol" />
+  </ItemGroup>
+</Project>

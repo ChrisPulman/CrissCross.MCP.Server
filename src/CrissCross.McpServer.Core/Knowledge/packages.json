@@ -1,0 +1,10 @@
+[
+  "CrissCross",
+  "CrissCross.WPF",
+  "CrissCross.WPF.UI",
+  "CrissCross.Avalonia",
+  "CrissCross.Avalonia.UI",
+  "CrissCross.MAUI",
+  "CrissCross.Maui.UI",
+  "CrissCross.WinForms"
+]

@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);TUnit0055</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Using Include="TUnit.Core" />
+    <Using Include="TUnit.Assertions" />
+    <Using Include="TUnit.Assertions.Extensions" />
+    <PackageReference Include="TUnit" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\CrissCross.McpServer.Core\CrissCross.McpServer.Core.csproj" />
+    <ProjectReference Include="..\..\src\CrissCross.McpServer\CrissCross.McpServer.csproj" />
+  </ItemGroup>
+</Project>

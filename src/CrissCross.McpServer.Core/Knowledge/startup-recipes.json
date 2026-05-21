@@ -1,0 +1,6 @@
+{
+  "wpf": ".WithWpf().BuildApp()",
+  "avalonia": ".UseReactiveUI(b => { })",
+  "maui": ".WithMaui().BuildApp()",
+  "winforms": ".WithWinForms().BuildApp()"
+}

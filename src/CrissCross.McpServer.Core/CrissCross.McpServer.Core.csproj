@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>Core CrissCross knowledge, review, resource, and template services for the MCP server.</Description>
+  </PropertyGroup>
+</Project>
