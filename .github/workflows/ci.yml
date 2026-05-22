@@ -96,9 +96,17 @@ jobs:
 
       - name: Publish to NuGet
         env:
-          NUGET_AUTH_TOKEN: ${{ secrets.NUGET_API_KEY }}
-          SOURCE_URL: https://api.nuget.org/v3/index.json
-        run: dotnet nuget push artifacts/*.nupkg --api-key "${{ secrets.NUGET_API_KEY }}" --source "https://api.nuget.org/v3/index.json" --skip-duplicate
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: |
+          $packages = Get-ChildItem -Path artifacts -Recurse -Filter *.nupkg -File
+          if ($packages.Count -eq 0) {
+            throw "No .nupkg files found under artifacts."
+          }
+
+          $packages | ForEach-Object {
+            Write-Host "Publishing $($_.FullName)"
+            dotnet nuget push $_.FullName --api-key "$env:NUGET_API_KEY" --source "https://api.nuget.org/v3/index.json" --skip-duplicate
+          }
 
       - name: Create GitHub Release
         env:
